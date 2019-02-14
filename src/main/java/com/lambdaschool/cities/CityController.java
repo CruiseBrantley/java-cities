@@ -48,4 +48,56 @@ public class CityController
             }
         }
     }
+
+    @GetMapping("/cities/homes")
+    public void findHomes()
+    {
+        ArrayList<City> cities = new ArrayList<City>();
+        cities.addAll(cityrepos.findAll());
+
+        for (City c: cities)
+        {
+            int rand = new Random().nextInt(10);
+            boolean randBool = new Random().nextBoolean();
+            final CityMessage message = new CityMessage(c.toString(), rand, randBool);
+
+            log.info("Sending Message...");
+            if (rand <= 5)
+            {
+                rt.convertAndSend(CitiesApplication.QUEUE_SECRET, message);
+            }
+            else if(c.getHomePrice() > 200000)
+            {
+                rt.convertAndSend(CitiesApplication.QUEUE_CITY1, message);
+            }
+            else
+            {
+                rt.convertAndSend(CitiesApplication.QUEUE_CITY2, message);
+            }
+        }
+    }
+
+    @GetMapping("/cities/names")
+    public void findNames()
+    {
+        ArrayList<City> cities = new ArrayList<City>();
+        cities.addAll(cityrepos.findAll());
+
+        for (City c: cities)
+        {
+            int rand = new Random().nextInt(10);
+            boolean randBool = new Random().nextBoolean();
+            final CityMessage message = new CityMessage(c.toString(), rand, randBool);
+
+            log.info("Sending Message...");
+            if (rand <= 5)
+            {
+                rt.convertAndSend(CitiesApplication.QUEUE_SECRET, message);
+            }
+            else
+            {
+                rt.convertAndSend(CitiesApplication.QUEUE_CITY1, message);
+            }
+        }
+    }
 }
